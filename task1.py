@@ -13,4 +13,7 @@ Y = yale_dataset.target  # Target labels
 ##print(X)
 ##print(Y)
 
+#Splitting the dataset into testing and training sets
+X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=42)
+
 
