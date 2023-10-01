@@ -1,3 +1,5 @@
+import numpy as np
+
 class MLPClassifier:
     def __init__(self, input_size, hidden_layers, output_size):
         self.input_size = input_size
