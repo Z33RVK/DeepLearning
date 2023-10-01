@@ -8,28 +8,29 @@ import os
 #Part 2
 
 # Taken from sir's notes
-# Define a function to extract the person label from the file name 
-def extract_person_label(file_name):
+# Define a function to extract the person label from the file name
+def extract_person_label(file_name): # extract label from the file name and adjust it to 0
     return int(file_name.split('.')[0].replace('subject', '')) - 1  # Subtract 1 to make labels start from 0
 
-yale_dataset_path = "./archive" 
+yale_dataset_path = "./archive" #path to image dataset
 
 data = []  # List to store image data
 labels = []  # List to store labels
 
-for file_name in os.listdir(yale_dataset_path):
-    
-    try:
-        img = plt.imread(os.path.join(yale_dataset_path, file_name))
+for file_name in os.listdir(yale_dataset_path): #list all of the files in the directory
+    try:    #passing an exception where .DS_Store is bypassed
+        img = plt.imread(os.path.join(yale_dataset_path, file_name)) #loads an image file at the specified path and assigns the resulting image data at the specified file path
     except (IOError, OSError):
         continue
 
     #print(img)
     data.append(img.flatten())  # Flatten image into a 1D array
-    labels.append(extract_person_label(file_name))
+    labels.append(extract_person_label(file_name)) #appending the image data to labels
 
-data = np.array(data)
-labels = np.array(labels)
+data = np.array(data) # converting the data extracted to numpy.array 
+labels = np.array(labels) # # converting the labels extracted to numpy.array
+
+
 
 #print(data.shape) -> (165, 77760)
 #print(labels.shape) -> (165)
@@ -46,11 +47,11 @@ X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2,
 # input size
 X_train_columns = len(X_train[0]) #77760
 
-#number of unique labels
+#number of unique labels, which happen to be 15
 output_labels = len(np.unique(y_train))
 print("Output labels: ",output_labels)
 
-# Define your MLP architecture
+# Defining the MLP architecture, inspired from sir's code
 model = tf.keras.Sequential([
     tf.keras.layers.Dense(128, activation='relu', input_shape=(X_train.shape[1],)),
     tf.keras.layers.Dense(64, activation='relu'),
@@ -68,8 +69,11 @@ loss, accuracy = model.evaluate(X_test, y_test)
 print('Test Loss:', loss)
 print('Test Accuracy:', accuracy)
 
+# obtaining the prediction on the test section
 y_pred = model.predict(X_test)
-y_pred_classes = np.argmax(y_pred, axis=1)
+
+# converts a matrix of predicted probabilities into an array of predicted class labels 
+y_pred_classes = np.argmax(y_pred, axis=1) 
 
 #calculating the precision, recall and f1-score
 precision = precision_score(y_test, y_pred_classes, average="micro")
