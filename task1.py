@@ -134,25 +134,3 @@ label_binarizer = LabelBinarizer()
 y_train_bin = label_binarizer.fit_transform(y_train)
 
 mlp.tune(X_train, y_train_bin, param_grid)
-##Part 2
-# # Convert y_train and y_test to one-hot encoding
-# y_train = keras.utils.to_categorical(y_train, num_classes)
-# y_test = keras.utils.to_categorical(y_test, num_classes)
-
-# # Define your MLP architecture
-# model = keras.models.Sequential([
-#     keras.layers.Dense(64, activation='relu', input_shape=(input_dim,)),
-#     keras.layers.Dense(32, activation='relu'),
-#     keras.layers.Dense(num_classes, activation='softmax')
-# ])
-
-# # Compile the model with categorical cross-entropy loss
-# model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-
-# # Train the model
-# model.fit(X_train, y_train, batch_size=32, epochs=10, validation_data=(X_test, y_test))
-
-# # Evaluate the model
-# loss, accuracy = model.evaluate(X_test, y_test)
-# print('Test Loss:', loss)
-# print('Test Accuracy:', accuracy)
